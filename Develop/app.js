@@ -34,7 +34,43 @@ const render = require("./lib/htmlRenderer");
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
 
+
 const employees = []
+
+inquirer
+  .prompt([ {
+    message: "What type of employee?",
+    type: 'list',
+    choices: ["Intern", "Engineer", 'Manager'],
+    name: "type"
+    },
+    {
+    message: "What is the employee's name?",
+    type: 'input',
+    name: 'name'
+    },
+    {
+    message: "What is the employee's id?",
+    type: 'input',
+    name: 'id'
+    },
+    {
+    message: "What is the employee's email?",
+    type: 'input',
+    name: 'email'
+    }
+  ])
+  .then(answers => {
+      console.log(answers);
+    // Use user feedback for... whatever!!
+  })
+  .catch(error => {
+    if(error.isTtyError) {
+      // Prompt couldn't be rendered in the current environment
+    } else {
+      // Something else when wrong
+    }
+  });
 
 // 1. Gather input from inquierer
 // 2. Go through intput and build class instances and add them to employee list
