@@ -36,44 +36,94 @@ const render = require("./lib/htmlRenderer");
 
 
 const employees = []
+function startQuestions() {
+    inquirer
+        .prompt([{
+            message: "What type of employee?",
+            type: 'list',
+            choices: ["Intern", "Engineer", 'Manager'],
+            name: "type"
+        },
+        {
+            message: "What is the employee's name?",
+            type: 'input',
+            name: 'name'
+        },
+        {
+            message: "What is the employee's id?",
+            type: 'input',
+            name: 'id'
+        },
+        {
+            message: "What is the employee's email?",
+            type: 'input',
+            name: 'email'
+        }
+        ])
 
-inquirer
-  .prompt([ {
-    message: "What type of employee?",
-    type: 'list',
-    choices: ["Intern", "Engineer", 'Manager'],
-    name: "type"
-    },
-    {
-    message: "What is the employee's name?",
-    type: 'input',
-    name: 'name'
-    },
-    {
-    message: "What is the employee's id?",
-    type: 'input',
-    name: 'id'
-    },
-    {
-    message: "What is the employee's email?",
-    type: 'input',
-    name: 'email'
-    }
-  ])
-  .then(answers => {
-      console.log(answers);
-    // Use user feedback for... whatever!!
-  })
-  .catch(error => {
-    if(error.isTtyError) {
-      // Prompt couldn't be rendered in the current environment
-    } else {
-      // Something else when wrong
-    }
-  });
+        .then(({ type, name, email, id }) => {
+            let nextQuestion
+            let employeeClass
+
+            if (type === "Intern") {
+                employeeClass = Intern
+                nextQuestion = {
+                    message: "What is the employee's school?",
+                    type: 'input',
+                    name: 'answer'
+                }
+            } else if (type === "Manager") {
+                employeeClass = Manager
+                nextQuestion = {
+                    message: "What is the employee's office number?",
+                    type: 'input',
+                    name: 'answer'
+                }
+            } else if (type === "Engineer") {
+                employeeClass = Engineer
+                nextQuestion = {
+                    message: "What is the employee's Github username?",
+                    type: 'input',
+                    name: 'answer'
+                }
+            }
+
+            inquirer.prompt([nextQuestion]).then(function ({ answer }) {
+                const person = new employeeClass(name, id, email, answer)
+                employees.push(person);
+
+                nextQuestion = {
+                    message: "Do you want to add another team member?",
+                    type: 'confirm',
+                    name: 'answer'
+                }
+                inquirer.prompt([nextQuestion]).then(function ({ answer }) {
+                    if (answer === true) {
+                        startQuestions();
+                    } else {
+                        // fs.writeFile(file, data[, options], callback)
+                        const html = render(employees);
+                        fs.writeFile(outputPath, html, function(err){
+                            if (err) {
+                                console.log(err)
+                            }
+                        })
+                    
+                    }
+                })
+            })
+        })
+        .catch(error => {
+            if (error.isTtyError) {
+                // Prompt couldn't be rendered in the current environment
+            } else {
+                // Something else when wrong
+            }
+        })
+};
 
 // 1. Gather input from inquierer
 // 2. Go through intput and build class instances and add them to employee list
 // 3. Call render with employees
 
-render(employees)
+startQuestions();
