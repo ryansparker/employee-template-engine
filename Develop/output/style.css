@@ -1,0 +1,37 @@
+h1, h2 {
+    font-family: 'Permanent Marker', cursive;
+}
+
+h2, h3 {
+    color: #FE5F55;
+}
+
+h3, li {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.jumbotron {
+    background-color: #FE5F55;
+
+}
+
+body {
+    background-color: #BDD5EA;
+    color: #495867;
+}
+
+.card-header {
+    background-color: #577399;
+}
+
+.card-body {
+    background-color: #F7F7FF;
+}
+
+a, a:hover, a:visited {
+    color: #FE5F55;
+  }
+
+  .employee-card {
+    margin:10px;
+  }
