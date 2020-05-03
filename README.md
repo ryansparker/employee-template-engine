@@ -25,7 +25,7 @@ In your terminal:
 
 * the generated HTML document will appear in your output folder
 
-[I'm a relative reference to a repository file](../Assets/guide-video.mov)
+[Repository file with video guide](../master/Assets/guide-video.mov)
 
 ## Credits
 
